@@ -1,32 +1,36 @@
 {
   "compilerOptions": {
+    // 转义的目标代码(ts -> js(es5/6/7))，next表示随着.browserslistrc所适配的浏览器而自适应使用对应的es语法
     "target": "esnext",
+    // 目标代码需要使用的模块化方案(commonjs reqire/module.export / es module import/export)
     "module": "esnext",
+    // 严格检查
     "strict": true,
+    // 对jsx做怎么样的处理，默认不处理
     "jsx": "preserve",
+    // 按照node的方式器解析模块 import "/index.node"
     "moduleResolution": "node",
+    // 跳过一些库的类型检查 例如lodash库、axios库
     "skipLibCheck": true,
+    // es module 和 commonjs 能不能一块混合使用 export default/module.exports
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "useDefineForClassFields": true,
+    // 要不要生成映射文件(ts -> js)
     "sourceMap": true,
+    // 文件路径在解析时，基本url
     "baseUrl": ".",
-    "types": [
-      "webpack-env"
-    ],
+    // 指定具体要解析使用的类型
+    "types": ["webpack-env"],
+    // 编译阶段路径解析 例如我们在vue.config.js配置了alias @/***，ts就会读取这边的配置获取到默认@对应的路径
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"]
     },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ]
+    // 指定项目中可以使用哪些库里的类型
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
+  // include内的文件类型都会应用compilerOptions配置项进行解析
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
@@ -34,7 +38,6 @@
     "tests/**/*.ts",
     "tests/**/*.tsx"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  // exclude 排除不解析
+  "exclude": ["node_modules"]
 }

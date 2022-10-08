@@ -11,6 +11,7 @@ import {
 } from '@/service/login/login'
 
 import localCache from '@/utils/cache'
+import { mapMenuToRoutes } from '@/utils/map-menus'
 
 // Module需要传入两个泛型: 当前模块state的类型/根state的类型
 const loginModule: Module<ILoginState, IRootState> = {
@@ -30,6 +31,12 @@ const loginModule: Module<ILoginState, IRootState> = {
     },
     changeUserMenus(state, userMenus: any) {
       state.userMenus = userMenus
+
+      // 注册用户权限所对应的路由
+      const routes = mapMenuToRoutes(state.userMenus)
+      routes.forEach((route) => {
+        router.addRoute('main', route)
+      })
     }
   },
   actions: {

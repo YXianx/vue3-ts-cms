@@ -23,11 +23,16 @@
               :key="subItem.id"
             >
               <!-- 二级菜单 -->
-              <el-menu-item :index="index + 1 + '-' + (subIndex + 1)">
-                <template #default>
-                  <span>{{ subItem.name }}</span>
-                </template>
-              </el-menu-item>
+              <router-link :to="subItem.url" custom v-slot:default="props">
+                <el-menu-item
+                  :index="index + 1 + '-' + (subIndex + 1)"
+                  @click="props.navigate"
+                >
+                  <template #default>
+                    <span>{{ subItem.name }}</span>
+                  </template>
+                </el-menu-item>
+              </router-link>
             </template>
           </el-sub-menu>
         </template>

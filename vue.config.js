@@ -36,6 +36,9 @@ module.exports = defineConfig({
         resolvers: [ElementPlusResolver()]
       }),
       ElementPlus()
-    ]
+    ],
+    devServer: {
+      historyApiFallback: true
+    }
   }
 })

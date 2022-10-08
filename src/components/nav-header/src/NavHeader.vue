@@ -13,18 +13,22 @@
         <Expand />
       </template>
     </el-icon>
-    <span>Header</span>
+    <div class="content">
+      <span>面包屑</span>
+      <user-info />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import { Fold, Expand } from '@element-plus/icons-vue'
-
+import UserInfo from './cpns/UserInfo.vue'
 export default defineComponent({
   components: {
     Fold,
-    Expand
+    Expand,
+    UserInfo
   },
   setup(props, { emit }) {
     const isFold = ref<boolean>(false)
@@ -45,9 +49,16 @@ export default defineComponent({
   height: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   .nav-fold {
     cursor: pointer;
     margin-right: 10px;
+  }
+  .content {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
   }
 }
 </style>

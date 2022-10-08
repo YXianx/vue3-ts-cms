@@ -8,7 +8,9 @@
         <el-header class="main-header">
           <nav-header @navFoldEvent="handleFoldEvent" />
         </el-header>
-        <el-main class="main-content">Main</el-main>
+        <el-main class="main-content">
+          <router-view></router-view>
+        </el-main>
       </el-container>
     </el-container>
   </div>

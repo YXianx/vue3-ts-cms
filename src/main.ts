@@ -9,9 +9,9 @@ import 'normalize.css'
 import './assets/css/index.less'
 
 const app = createApp(App)
-app.use(router)
 app.use(store)
-setupStore() // 刷新页面时重新保存用户数据到vuex
+setupStore() // 刷新页面时重新保存用户数据到vuex 获取用户动态路由 注意：需要写在use router之前，先加载路由，router之后跳转才不会出现路由还没注册就跳到notfound的问题
+app.use(router)
 app.mount('#app')
 
 // 根据响应内容定义接口，使得res数据能够智能提示

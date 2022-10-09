@@ -1,3 +1,4 @@
+import { IBreadcrumb } from '@/base-ui/yx-breadcrumb'
 import type { RouteRecordRaw } from 'vue-router'
 
 export function mapMenuToRoutes(userMenus: any[]): RouteRecordRaw[] {
@@ -29,4 +30,44 @@ export function mapMenuToRoutes(userMenus: any[]): RouteRecordRaw[] {
   _recurseGetRoute(userMenus)
 
   return routes
+}
+
+/**
+ * 当前路由字符串匹配菜单路由对象
+ * @param userMenus 用户菜单树
+ * @param currentPath 当前路由
+ * @returns 路由对象
+ */
+export function pathMapToMenu(userMenus: any[], currentPath: string): any {
+  for (const menu of userMenus) {
+    // 二级路由
+    if (menu.type === 2) {
+      if (menu.url === currentPath) {
+        return menu
+      }
+    } else if (menu.type === 1) {
+      const findMenu = pathMapToMenu(menu.children ?? [], currentPath)
+      if (findMenu) {
+        return findMenu
+      }
+    }
+  }
+}
+
+export function pathMapToBreadcrumb(
+  userMenus: any[],
+  currentPath: string
+): any {
+  const breadcrumbs: IBreadcrumb[] = []
+  for (const menu of userMenus) {
+    if (menu.type === 1) {
+      const findMenu = pathMapToMenu(userMenus, currentPath)
+      if (findMenu) {
+        breadcrumbs.push({ name: menu.name, path: menu.url })
+        breadcrumbs.push({ name: findMenu.name, path: findMenu.url })
+
+        return breadcrumbs
+      }
+    }
+  }
 }

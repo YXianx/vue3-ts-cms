@@ -5,7 +5,7 @@
     </div>
 
     <el-menu
-      default-active="2"
+      :default-active="defaultActive"
       class="el-menu-vertical"
       :collapse="collapse"
       :collapse-transition="false"
@@ -13,21 +13,15 @@
       <template v-for="(item, index) in userMenus" :key="item.id">
         <template v-if="item.type === 1">
           <!-- 带有子菜单的一级菜单 -->
-          <el-sub-menu :index="index + 1 + ''">
+          <el-sub-menu :index="item.id + ''">
             <template #title>
               <el-icon><location /></el-icon>
               <span>{{ item.name }}</span>
             </template>
-            <template
-              v-for="(subItem, subIndex) in item.children"
-              :key="subItem.id"
-            >
+            <template v-for="subItem in item.children" :key="subItem.id">
               <!-- 二级菜单 -->
               <router-link :to="subItem.url" custom v-slot:default="props">
-                <el-menu-item
-                  :index="index + 1 + '-' + (subIndex + 1)"
-                  @click="props.navigate"
-                >
+                <el-menu-item :index="subItem.id + ''" @click="props.navigate">
                   <template #default>
                     <span>{{ subItem.name }}</span>
                   </template>
@@ -52,9 +46,12 @@
 
 <script lang="ts">
 // TODO: el-menu折叠卡顿
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref } from 'vue'
 import { useStore } from '@/store'
+import { useRoute } from 'vue-router'
 import { Location } from '@element-plus/icons-vue'
+import { pathMapToMenu } from '@/utils/map-menus'
+import { keyBy } from 'lodash'
 export default defineComponent({
   props: {
     collapse: {
@@ -71,8 +68,17 @@ export default defineComponent({
     // 此处的useStore为自己封装的函数
     const store = useStore()
     const userMenus = computed(() => store.state.login.userMenus)
+
+    // 获取当前路由对应的default-active菜单项
+    // TODO: el-menu的default-active属性不生效
+    const route = useRoute()
+    const currentPath = route.path
+    const currentRoute = pathMapToMenu(userMenus.value, currentPath)
+    const defaultActive = ref(currentRoute.id + '')
+
     return {
-      userMenus
+      userMenus,
+      defaultActive
     }
   }
 })
